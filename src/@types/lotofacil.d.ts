@@ -2,7 +2,7 @@ export type LotofacilLatestProps = {
   acumulou: boolean;
   concurso: number;
   data: string;
-  dezenas: number[];
+  dezenas: string[];
   dataProximoConcurso: string;
   localGanhadores: LocalGanhadores[];
   premiacoes: Premiacao[];

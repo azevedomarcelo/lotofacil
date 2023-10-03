@@ -2,12 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { LotofacilLatestProps } from "./@types/lotofacil";
 
 import styles from './App.module.css';
-import { currency } from "./utils/formatter";
+import { currency, firstGame, secondGame } from "./utils/formatter";
 
 function App() {
   const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
   const [latest, setLatest] = useState<LotofacilLatestProps>();
   const [isLoading, setIsLoading] = useState(false);
+  const [highlightedNumbersGameA, setHighlightedNumbersGameA] = useState<string[]>([])
+  const [correctNumbersGame1, setCorrectNumbersGame1] = useState<number>(0)
+  const [highlightedNumbersGameB, setHighlightedNumbersGameB] = useState<string[]>([])
+  const [correctNumbersGame2, setCorrectNumbersGame2] = useState<number>(0)
 
   function getRandomNumber(min: number, max: number): number {
     // Generate a random integer between min and max (inclusive).
@@ -34,14 +38,30 @@ function App() {
 
       setIsLoading(false);
     }, 1000)
-
   }, []);
+
+  const compareNumbersGame1 = (dezenas: string[]) => {
+    const commonNumbersGame1 = dezenas.filter((number) => firstGame.includes(number));
+    setHighlightedNumbersGameA(commonNumbersGame1)
+    setCorrectNumbersGame1(commonNumbersGame1.length)
+  };
+
+  const compareNumbersGame2 = (dezenas: string[]) => {
+    const commonNumbersGame2 = dezenas.filter((number) => secondGame.includes(number));
+    setHighlightedNumbersGameB(commonNumbersGame2)
+    setCorrectNumbersGame2(commonNumbersGame2.length)
+  };
 
   useEffect(() => {
     fetch('https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest')
       .then(response => response.json())
-      .then(data => { setLatest(data); console.log(data) })
-  }, [])
+      .then((data: LotofacilLatestProps) => {
+        setLatest(data);
+        console.log(data);
+        compareNumbersGame1(data.dezenas)
+        compareNumbersGame2(data.dezenas)
+      })
+  }, []);
 
   return (
     <main className={styles.mainContent}>
@@ -77,6 +97,32 @@ function App() {
                 <p>{dezena}</p>
               ))}
             </div>
+
+            <hr />
+            <div className={styles.gamePlayedContent}>
+              {/* {firstGame.map((first, index) => (<span key={`${first}-${index}`}>{first}</span>))} */}
+              A: {firstGame.map((num, index) => (
+                <span key={index} className={highlightedNumbersGameA.includes(num) ? styles.highlight : ''}>
+                  {num}
+                </span>
+              ))}
+              <strong>
+                ({correctNumbersGame1} acertos)
+              </strong>
+            </div>
+            <hr />
+            <div className={styles.gamePlayedContent}>
+              {/* {secondGame.map((second, index) => (<span key={`${second}-${index}`}>{second}</span>))} */}
+              B: {secondGame.map((num, index) => (
+                <span key={index} className={highlightedNumbersGameB.includes(num) ? styles.highlight : ''}>
+                  {num}
+                </span>
+              ))}
+              <strong>
+                ({correctNumbersGame2} acertos)
+              </strong>
+            </div>
+            <hr />
           </div>
 
           <div className={styles.award}>
@@ -126,8 +172,9 @@ function App() {
           </div>
 
         </section>
-      )}
-    </main>
+      )
+      }
+    </main >
   )
 }
 

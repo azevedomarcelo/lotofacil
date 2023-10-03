@@ -86,24 +86,43 @@
   flex-direction: column;
   gap: 1rem;
   margin: 0 auto 3rem;
+  padding: 0 1rem;
 }
 
 .dezenasSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .dezenas {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
+
   >p {
     font-size: 1.5rem;
     color: #7f3992;
     font-weight: bold;
     text-align: center;
   }
+}
+
+.gamePlayedContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  >span {
+    font-size: 1.25rem;
+  }
+}
+
+.highlight {
+  background: #fff77a;
+  border-radius: .5rem;
+  padding: .5rem;
 }
 
 .award {
