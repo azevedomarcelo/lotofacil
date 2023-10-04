@@ -1,0 +1,57 @@
+.generatedNumbersContainer {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+
+
+  >li {
+    background: #7f3992;
+    border-radius: 186px;
+    color: #fff;
+    display: block;
+    font-display: swap;
+    font-size: 21px;
+    line-height: 57px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    width: 57px;
+  }
+
+}
+
+.generateNumberButton {
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  background: #0053B8;
+
+  border-color: #0053B8;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  
+  width: 10rem;
+  padding: 0.375rem 0.75rem;
+
+  font-size: 1rem;
+  font-weight: 400;
+
+  line-height: 1.5;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+}
