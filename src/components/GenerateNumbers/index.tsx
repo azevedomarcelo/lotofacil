@@ -39,7 +39,7 @@ export function GenerateNumbers() {
         onClick={generateRandomNumbers}
       >
         {isLoading ?
-          <Spinner width={24} height={24} color="" />
+          <Spinner width={24} height={24} color="" data-testid="spinner" />
           :
           'Gerar 15 números'}
       </button>

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import axios from 'axios';
+
 import { Spinner } from "../Spinner";
 
 import { LotofacilLatestProps } from "../../@types/lotofacil";
 import { currency, firstGame, secondGame } from "../../utils/formatter";
 
 import styles from './styles.module.css';
+import { compareNumbers } from "../../utils/compareNumbers";
 
 export function LatestGame() {
   const [latest, setLatest] = useState<LotofacilLatestProps>();
@@ -13,23 +16,17 @@ export function LatestGame() {
   const [highlightedNumbersGameB, setHighlightedNumbersGameB] = useState<string[]>([])
   const [correctNumbersGame2, setCorrectNumbersGame2] = useState<number>(0)
 
-  const compareNumbers = (dezenas: string[]) => {
-    const commonNumbersGame1 = dezenas.filter((number) => firstGame.includes(number));
-    const commonNumbersGame2 = dezenas.filter((number) => secondGame.includes(number));
-    setCorrectNumbersGame1(commonNumbersGame1.length);
-    setCorrectNumbersGame2(commonNumbersGame2.length)
-    setHighlightedNumbersGameA(commonNumbersGame1)
-    setHighlightedNumbersGameB(commonNumbersGame2)
-  };
-
   useEffect(() => {
-    fetch('https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest')
-      .then(response => response.json())
+    axios.get('https://loteriascaixa-api.herokuapp.com/api/lotofacil/latest')
+      .then(response => response.data)
       .then((data: LotofacilLatestProps) => {
         setLatest(data);
-        compareNumbers(data.dezenas)
-      })
-  }, [])
+        setCorrectNumbersGame1(compareNumbers(data.dezenas).game1.length)
+        setCorrectNumbersGame2(compareNumbers(data.dezenas).game2.length)
+        setHighlightedNumbersGameA(compareNumbers(data.dezenas).game1)
+        setHighlightedNumbersGameB(compareNumbers(data.dezenas).game2)
+      });
+  }, []);
 
   return (
     <>
@@ -38,7 +35,7 @@ export function LatestGame() {
         <section className={styles.latestSection}>
           <div>
             <span>Concurso: </span>
-            <b>
+            <b data-testid="contestNumber">
               {latest.concurso} ({latest.data})
             </b>
           </div>
